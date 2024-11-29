@@ -1,4 +1,5 @@
 
+
 # Terraform AWS Infra
 
 A brief description of what this project does and who it's for
@@ -93,3 +94,79 @@ logging_bucket  = "my-app-logs"
 ```bash
   terraform apply -var-file=environments/dev/terraform.tfvars
 ```
+
+## Variables
+
+#### Global Variables
+
+| Variable | Description                | Default Value | Required     |
+| :-------- | :------------------------- | :-------- | :------- |
+| `aws_region` | AWS region for resources | `eu-west-2` | `Yes` |
+| `default_tags` | Default tags for resources | `{}` | `Yes` |
+
+#### VPC Variables
+
+
+| Variable | Description                | Default Value | Required     |
+| :-------- | :------------------------- | :-------- | :------- |
+| `vpc_cidr` | CIDR block for the VPC | `10.0.0.0/16` | `Yes` |
+| `public_subnet_cidrs` | Public subnet CIDRs | `{}` | `Yes` |
+| `private_subnet_cidrs` | Private subnet CIDRs | `{}` | `Yes` |
+
+
+
+#### EC2 Variables
+| Variable | Description                | Default Value | Required     |
+| :-------- | :------------------------- | :-------- | :------- |
+| `ami_id` | Amazon Machine Image ID | `""` | `Yes` |
+| `instances` | EC2 instance configurations | `{}` | `Yes` |
+
+#### RDS Variables
+
+
+| Variable | Description                | Default Value | Required     |
+| :-------- | :------------------------- | :-------- | :------- |
+| `storage` | Allocated storage in GB | `20` | `Yes` |
+| `instance_class` | RDS instance class | `db.t3.micro` | `Yes` |
+| `db_name` | Database name | `""` | `Yes` |
+| `username` | Database admin username | `""` | `Yes` |
+| `password` | Database admin password | `""` | `Yes` |
+
+
+#### S3 Variables
+| Variable | Description                | Default Value | Required     |
+| :-------- | :------------------------- | :-------- | :------- |
+| `bucket_name` | Name of the S3 bucket | `""` | `Yes` |
+| `logging_bucket` | Name of the bucket for access logs | `""` | `Yes` |
+
+
+## Outputs
+
+| Variable | Description                |
+| :-------- | :------------------------- |
+| `vpc_id` | ID of the VPC | 
+| `public_subnet_ids` | IDs of public subnets |
+| `private_subnet_ids` | IDs of private subnets |
+| `ec2_instance_ids` | IDs of the EC2 instances |
+| `s3_bucket_arn` | ARN of the S3 bucket |
+| `rds_endpoint` | Endpoint of the RDS database |
+
+
+
+
+### Best Practices
+
+1.	#### State Management:
+Use remote state (e.g., S3 + DynamoDB) to enable team collaboration and avoid conflicts.
+
+2.	#### Secrets Management:
+Store sensitive variables like passwords and API keys in a secure vault or exclude them from source control using .gitignore.
+
+3.	#### Environment Isolation:
+Use separate variable files for each environment (e.g., dev, test, prod).
+
+
+### Contributors
+
+- [@Fajobi13](https://www.github.com/Fajobi13)
+
