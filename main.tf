@@ -63,8 +63,8 @@ module "rds" {
   storage           = var.storage
   instance_class    = var.instance_class
   db_name           = var.db_name
-  db_username       = var.db_username   # Pass correct variable
-  db_password       = var.db_password   # Pass correct variable
+  db_username       = var.db_username # Pass correct variable
+  db_password       = var.db_password # Pass correct variable
   subnet_ids        = values(module.vpc.private_subnet_ids)
   security_group_id = var.rds_security_group_id
   backup_retention  = var.backup_retention
