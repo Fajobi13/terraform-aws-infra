@@ -1,3 +1,4 @@
+
 # Terraform AWS Infra
 
 A brief description of what this project does and who it's for
@@ -45,3 +46,50 @@ This project is modular and scalable, making it suitable for production environm
 	•	RDS: Restrict MySQL access to private subnets.
 
 
+
+## Getting Started
+### Pre-requisites
+
+1.	Install Terraform v1.5.0+
+	
+2.  Configure AWS CLI with appropriate credentials:
+
+```bash
+  aws configure
+```
+
+### How to Use
+
+
+
+1. Clone the repository:
+
+```bash
+  git clone https://github.com/Fajobi13/terraform-aws-infra.git
+  cd terraform-aws-infra
+```
+
+2. Initialize Terraform:
+
+```bash
+  terraform init
+```
+
+3.	Update terraform.tfvars or environment-specific variable files (environments/dev/terraform.tfvars) with appropriate values:
+```hcl
+ami_id          = "ami-12345678"    # Replace with a valid AMI ID
+storage         = 20
+instance_class  = "db.t3.micro"
+bucket_name     = "my-app-storage"
+logging_bucket  = "my-app-logs"
+```
+
+4.	Plan the infrastructure:
+```bash
+  terraform plan -var-file=environments/dev/terraform.tfvars
+```
+
+5.	Deploy the infrastructure:
+```bash
+  terraform apply -var-file=environments/dev/terraform.tfvars
+```
