@@ -27,12 +27,12 @@ locals {
 }
 
 module "vpc" {
-  source                = "./modules/vpc"
-  vpc_cidr              = "10.0.0.0/16"
-  public_subnet_cidrs   = { subnet1 = "10.0.1.0/24", subnet2 = "10.0.2.0/24" }
-  private_subnet_cidrs  = { subnet1 = "10.0.3.0/24", subnet2 = "10.0.4.0/24" }
-  default_tags          = var.default_tags
-  project_name          = var.project_name
+  source               = "./modules/vpc"
+  vpc_cidr             = "10.0.0.0/16"
+  public_subnet_cidrs  = { subnet1 = "10.0.1.0/24", subnet2 = "10.0.2.0/24" }
+  private_subnet_cidrs = { subnet1 = "10.0.3.0/24", subnet2 = "10.0.4.0/24" }
+  default_tags         = var.default_tags
+  project_name         = var.project_name
 }
 
 module "security_group" {
@@ -45,13 +45,13 @@ module "security_group" {
 }
 
 module "ec2" {
-  source       = "./modules/ec2"
-  ami_id       = var.ami_id
-  instances    = {
+  source = "./modules/ec2"
+  ami_id = var.ami_id
+  instances = {
     instance1 = {
-      instance_type    = "t2.micro"
-      key_name         = "dev-key"
-      subnet_id        = module.vpc.public_subnet_ids["subnet1"]
+      instance_type     = "t2.micro"
+      key_name          = "dev-key"
+      subnet_id         = module.vpc.public_subnet_ids["subnet1"]
       security_group_id = module.security_group.ec2_sg_id
     }
   }
@@ -62,19 +62,20 @@ module "rds" {
   source            = "./modules/rds"
   storage           = var.storage
   instance_class    = var.instance_class
-  db_name           = "my_database"
-  username          = "admin"
-  password          = "my_password"
-  subnet_ids        = values(module.vpc.private_subnet_ids) # Private subnets
-  security_group_id = module.security_group.rds_sg_id
+  db_name           = var.db_name
+  db_username       = var.db_username   # Pass correct variable
+  db_password       = var.db_password   # Pass correct variable
+  subnet_ids        = values(module.vpc.private_subnet_ids)
+  security_group_id = var.rds_security_group_id
   backup_retention  = var.backup_retention
   default_tags      = var.default_tags
+  project_name      = var.project_name
 }
 
 module "s3" {
-  source        = "./modules/s3"
-  bucket_name   = var.bucket_name
+  source         = "./modules/s3"
+  bucket_name    = var.bucket_name
   logging_bucket = var.logging_bucket
-  default_tags  = var.default_tags
+  default_tags   = var.default_tags
 }
 

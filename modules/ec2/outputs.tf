@@ -1,3 +1,4 @@
 output "ec2_instance_ids" {
-  value = aws_instance.web_server[*].id
+  description = "List of EC2 instance IDs"
+  value       = values(aws_instance.web_server)[*].id
 }
